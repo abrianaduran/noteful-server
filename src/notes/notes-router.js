@@ -62,9 +62,9 @@ notesRouter
         .get((req, res, next) => {
             res.json({
                 id: res.note.id,
-                note_name: res.note.note_name,
+                note_name: xss(res.note.note_name),
                 date_modified: res.note.date_modified,
-                content: res.note.content,
+                content: xss(res.note.content),
             })
         })
         .delete((req, res, next) => {
@@ -78,7 +78,7 @@ notesRouter
             .catch(next)
         })
         .patch(jsonParser, (req, res, next) => {
-            const { note_name, date_modified, content }
+            const { note_name, date_modified, content } = req.body
             const noteToUpdate = { note_name, date_modified, content }
 
             const numberofValues = Object.values(noteToUpdate).filter(Boolean).length
